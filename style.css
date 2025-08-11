@@ -2136,7 +2136,7 @@ input[type="file"]:focus {
 [data-theme="black"] .mode-btn,
 [data-theme="black"] .main-btn,
 [data-theme="black"] .action-btn {
-    background: #1a1a1a !important;
+    background: #000 !important;
     color: #ffffff !important;
     border-color: rgba(255, 255, 255, 0.3) !important;
 }
