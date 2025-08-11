@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional English vocabulary learning app with Turkish translations, pronunciation practice, and progress tracking">
+    <meta name="keywords" content="English vocabulary, Turkish translation, language learning, pronunciation, vocabulary builder">
+    <meta name="author" content="Vocabulary Learning App">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="English Vocabulary Learning App">
+    <meta property="og:description" content="Learn English vocabulary with Turkish translations and pronunciation practice">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="logo.svg">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="English Vocabulary Learning App">
+    <meta name="twitter:description" content="Learn English vocabulary with Turkish translations and pronunciation practice">
+
+    <title>VocabMaster - English Vocabulary Learning App</title>
+
+    <!-- Icons and Favicon -->
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="alternate icon" href="logo.svg">
+    <link rel="apple-touch-icon" href="logo.svg">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="msapplication-TileColor" content="#667eea">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+        <button id="theme-toggle" class="theme-toggle">🎨</button>
+        <div id="theme-options" class="theme-options">
+            <div class="theme-options-header">
+                <h5>Choose Theme</h5>
+            </div>
+            <div class="theme-grid">
+                <button class="theme-option" data-theme="white">
+                    <span class="theme-color white-preview"></span>
+                    <span class="theme-name">Clean White</span>
+                </button>
+                <button class="theme-option" data-theme="default">
+                    <span class="theme-color default-preview"></span>
+                    <span class="theme-name">Colorful</span>
+                </button>
+                <button class="theme-option" data-theme="black">
+                    <span class="theme-color black-preview"></span>
+                    <span class="theme-name">Elegant Black</span>
+                </button>
+                <button class="theme-option" data-theme="green">
+                    <span class="theme-color green-preview"></span>
+                    <span class="theme-name">Nature Green</span>
+                </button>
+                <button class="theme-option" data-theme="orange">
+                    <span class="theme-color orange-preview"></span>
+                    <span class="theme-name">Sunset Orange</span>
+                </button>
+                <button class="theme-option" data-theme="red">
+                    <span class="theme-color red-preview"></span>
+                    <span class="theme-name">Passion Red</span>
+                </button>
+                <button class="theme-option" data-theme="blue">
+                    <span class="theme-color blue-preview"></span>
+                    <span class="theme-name">Ocean Blue</span>
+                </button>
+                <button class="theme-option" data-theme="pink">
+                    <span class="theme-color pink-preview"></span>
+                    <span class="theme-name">Rose Pink</span>
+                </button>
+            </div>
+            <div class="theme-customization">
+                <h5>Personalize Your Experience</h5>
+                <input type="text" id="user-name" placeholder="Enter your name" maxlength="20">
+                <button id="save-personalization" class="save-btn">Save</button>
+            </div>
+        </div>
+    </div>
+    <!-- Home Screen -->
+    <section id="home-screen" class="screen active">
+        <div class="container theme-enhanced">
+            <header class="app-header">
+                <div class="logo-container">
+                    <img src="logo.svg" alt="VocabMaster Logo" class="app-logo">
+                    <div class="logo-glow"></div>
+                    <h1 class="app-title" data-text="VocabMaster">VocabMaster</h1>
+                </div>
+                <div class="header-decoration">
+                    <div class="floating-element" style="--delay: 0s;"></div>
+                    <div class="floating-element" style="--delay: 1s;"></div>
+                    <div class="floating-element" style="--delay: 2s;"></div>
+                </div>
+                <p class="app-description">Professional English vocabulary learning with Turkish translations, pronunciation practice, and intelligent progress tracking.</p>
+                <div class="app-stats" id="app-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-words">0</span>
+                        <span class="stat-label">Total Words</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="learned-words-count">0</span>
+                        <span class="stat-label">Learned</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="favorite-words-count">0</span>
+                        <span class="stat-label">Favorites</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="difficult-words-count">0</span>
+                        <span class="stat-label">Difficult</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="categories-count">1</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="daily-streak">0</span>
+                        <span class="stat-label">Daily Streak</span>
+                    </div>
+                </div>
+            </header>
+
+
+
+            <div class="main-buttons">
+                <button id="start-learning-btn" class="main-btn primary">
+                    <span class="btn-icon">📚</span>
+                    Learn Words
+                </button>
+                <button id="categories-btn" class="main-btn secondary">
+                    <span class="btn-icon">📁</span>
+                    Categories
+                </button>
+                <button id="difficult-words-btn" class="main-btn danger">
+                    <span class="btn-icon">⚠️</span>
+                    Difficult Words
+                </button>
+                <button id="favorite-words-btn" class="main-btn warning">
+                    <span class="btn-icon">⭐</span>
+                    Favorite Words
+                </button>
+                <button id="notes-btn" class="main-btn info">
+                    <span class="btn-icon">📝</span>
+                    Notes
+                </button>
+
+                <button id="add-word-btn" class="main-btn secondary">
+                    <span class="btn-icon">➕</span>
+                    Add New Word
+                </button>
+                <button id="dictionary-btn" class="main-btn info">
+                    <span class="btn-icon">📖</span>
+                    All Words (Dictionary)
+                </button>
+                <button id="statistics-btn" class="main-btn success">
+                    <span class="btn-icon">📊</span>
+                    Statistics & Reports
+                </button>
+
+                <button id="data-management-btn" class="main-btn tertiary">
+                    <span class="btn-icon">💾</span>
+                    Data Management
+                </button>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Word Learning Screen -->
+    <section id="learning-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button id="back-to-home" class="back-btn">← Back to Home</button>
+                <h2>Learn Words</h2>
+            </header>
+
+            <!-- Word Selection Phase -->
+            <div id="word-selection-phase" class="word-selection">
+                <h3>Choose Learning Mode</h3>
+                <p>Select how you want to practice your vocabulary</p>
+
+                <div class="learning-mode-grid">
+                    <button id="quiz-mode" class="mode-btn primary">
+                        <span class="mode-icon">🎯</span>
+                        <span class="mode-title">Quiz Mode</span>
+                        <span class="mode-desc">5+ word sets with 4 question types</span>
+                    </button>
+
+                    <button id="learned-words-practice" class="mode-btn success">
+                        <span class="mode-icon">🔄</span>
+                        <span class="mode-title">Review Learned</span>
+                        <span class="mode-desc">Practice learned words</span>
+                    </button>
+                    <button id="difficult-words-practice" class="mode-btn danger">
+                        <span class="mode-icon">⚠️</span>
+                        <span class="mode-title">Difficult Words</span>
+                        <span class="mode-desc">Focus on challenging words</span>
+                    </button>
+                    <button id="favorite-words-practice" class="mode-btn warning">
+                        <span class="mode-icon">⭐</span>
+                        <span class="mode-title">Favorite Words</span>
+                        <span class="mode-desc">Practice favorite words</span>
+                    </button>
+                    <button id="repeat-practice" class="mode-btn info">
+                        <span class="mode-icon">🔁</span>
+                        <span class="mode-title">Repeat Practice</span>
+                        <span class="mode-desc">Practice any number of words</span>
+                    </button>
+                </div>
+                
+                <div class="specialized-modes">
+                    <h4>Specialized Practice Modes</h4>
+                    <div class="learning-mode-grid specialized">
+                        <button id="listening-practice" class="mode-btn audio">
+                            <span class="mode-icon">🎧</span>
+                            <span class="mode-title">Listening Practice</span>
+                            <span class="mode-desc">Focus on pronunciation & listening</span>
+                        </button>
+
+                        <button id="translation-practice" class="mode-btn translate">
+                            <span class="mode-icon">🔄</span>
+                            <span class="mode-title">Translation Practice</span>
+                            <span class="mode-desc">Turkish to English only</span>
+                        </button>
+                        <button id="reverse-translation-practice" class="mode-btn reverse">
+                            <span class="mode-icon">↩️</span>
+                            <span class="mode-title">Reverse Translation</span>
+                            <span class="mode-desc">English to Turkish only</span>
+                        </button>
+                        <button id="writing-practice" class="mode-btn write">
+                            <span class="mode-icon">✍️</span>
+                            <span class="mode-title">Writing Practice</span>
+                            <span class="mode-desc">Type words from memory</span>
+                        </button>
+                        <button id="pronunciation-practice-btn" class="mode-btn voice">
+                            <span class="mode-icon">🎤</span>
+                            <span class="mode-title">Pronunciation Practice</span>
+                            <span class="mode-desc">Speak words and get feedback</span>
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <div id="repeat-selection" style="display: none;">
+                    <h4>Repeat Practice</h4>
+                    <p>Choose how many words you want to practice (leave empty for all words)</p>
+                    <div class="repeat-controls">
+                        <input type="number" id="repeat-word-count" placeholder="Number of words (optional)" min="1" class="repeat-input">
+                        <div class="repeat-buttons">
+                            <button id="start-repeat-all" class="main-btn primary">Practice All Words</button>
+                            <button id="start-repeat-number" class="main-btn secondary">Practice Selected Number</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="quiz-selection" style="display: none;">
+                    <h4>Select Words for Quiz</h4>
+                    <div class="selection-controls">
+                        <button id="random-words" class="main-btn primary">📱 Random Selection</button>
+                        <button id="manual-select" class="main-btn secondary">👆 Choose Specific Words</button>
+                    </div>
+
+                    <div id="manual-selection-area" style="display: none;">
+                        <div class="word-selection-controls">
+                            <div class="selection-filters">
+                                <select id="word-filter-category" class="filter-select">
+                                    <option value="all">All Categories</option>
+                                </select>
+                                <select id="word-filter-difficulty" class="filter-select">
+                                    <option value="all">All Difficulties</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                </select>
+                                <input type="text" id="word-search" placeholder="Search words..." class="search-input">
+                            </div>
+                            <div class="selection-actions">
+                                <button id="select-all-words" class="action-btn">Select All</button>
+                                <button id="clear-selection" class="action-btn">Clear Selection</button>
+                                <button id="select-favorites" class="action-btn">Select Favorites</button>
+                            </div>
+                        </div>
+                        <div class="word-selection-grid" id="word-selection-grid"></div>
+                        <div class="selection-summary">
+                            <span id="selected-count">0</span> words selected
+                            <button id="start-quiz" class="main-btn primary" disabled>Start Quiz</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Quiz Phase -->
+            <div id="quiz-phase" class="quiz-container" style="display: none;">
+                <div class="quiz-header">
+                    <div class="quiz-navigation">
+                        <button id="exit-quiz" class="back-btn danger">← Exit Quiz</button>
+                        <div class="quiz-progress">
+                            <span id="current-quiz-step">1</span> / <span id="total-quiz-steps">15</span>
+                            <div class="progress-bar">
+                                <div id="quiz-progress-bar" class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-content">
+                    <div class="quiz-question-area">
+                        <h3 id="quiz-phase-title">Turkish to English</h3>
+                        <div id="quiz-question-container">
+                            <div id="quiz-question" class="quiz-question"></div>
+                            <div id="quiz-options" class="quiz-options"></div>
+                            <div id="quiz-input-area" class="quiz-input-area" style="display: none;">
+                                <input type="text" id="quiz-text-input" placeholder="Type your answer...">
+                                <button id="submit-text-answer" class="submit-btn">Submit</button>
+                            </div>
+                            <div id="quiz-audio-area" class="quiz-audio-area" style="display: none;">
+                                <button id="play-audio-question" class="audio-btn">🔊 Play Audio</button>
+                                <div id="audio-options" class="quiz-options"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-feedback" id="quiz-feedback" style="display: none;">
+                        <div id="feedback-content"></div>
+                        <button id="next-quiz-question" class="next-btn">Next Question</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Results -->
+            <div id="quiz-results" class="quiz-results" style="display: none;">
+                <div class="results-header">
+                    <h2>🎉 Quiz Complete!</h2>
+                    <div class="results-score">
+                        <span id="final-score">0</span>/<span id="total-questions">0</span>
+                        <div class="score-percentage" id="score-percentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="results-details">
+                    <div id="results-breakdown"></div>
+                </div>
+
+                <div id="quiz-word-marking" style="display: none;">
+                    <!-- Word marking section will be populated by JavaScript -->
+                </div>
+
+                <div class="results-actions">
+                    <button id="retake-quiz" class="main-btn primary">🔄 Retake Quiz</button>
+                    <button id="back-to-learning" class="main-btn secondary">← Back to Learning</button>
+                    <button id="home-from-results" class="main-btn tertiary">🏠 Home</button>
+                </div>
+            </div>
+
+            <!-- Word Display -->
+            <div id="word-display" class="word-card" style="display: none;">
+                <div class="word-header">
+                    <h2 id="word-title" class="word-title"></h2>
+                    <button id="play-word-audio" class="play-btn">
+                        <span>🔊</span> Play
+                    </button>
+                </div>
+
+                <div class="word-content" id="word-content">
+                    <div>
+                        <strong>Turkish Translation:</strong>
+                        <p id="word-turkish"></p>
+                    </div>
+                    <div>
+                        <strong>Part of Speech:</strong>
+                        <p id="word-part-of-speech"></p>
+                    </div>
+                    <div id="word-level-container">
+                        <strong>Level:</strong>
+                        <p id="word-level"></p>
+                    </div>
+                    <div id="word-phrasal-container" style="display: none;">
+                        <strong>Phrasal Verb:</strong>
+                        <p id="word-phrasal">Yes</p>
+                    </div>
+                    <div>
+                        <strong>Definition:</strong>
+                        <p id="word-definition"></p>
+                    </div>
+                    <div id="word-synonyms-container" style="display: none;">
+                        <strong>Synonyms:</strong>
+                        <p id="word-synonyms"></p>
+                    </div>
+                    <div id="word-antonyms-container" style="display: none;">
+                        <strong>Antonyms:</strong>
+                        <p id="word-antonyms"></p>
+                    </div>
+                    <div>
+                        <strong>Examples:</strong>
+                        <div id="word-examples"></div>
+                    </div>
+                    <div id="word-image-container" style="display: none;">
+                        <strong>Visual Aid:</strong>
+                        <img id="word-image" alt="Word visual">
+                    </div>
+                </div>
+
+                <div class="word-actions">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="mark-learned">
+                        <span class="checkmark">✓</span>
+                        Mark as Learned
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="mark-favorite">
+                        <span class="checkmark">⭐</span>
+                        Add to Favorites
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="mark-difficult">
+                        <span class="checkmark">⚠️</span>
+                        Mark as Difficult
+                    </label>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button id="prev-word" class="nav-btn">← Previous</button>
+                    <button id="save-progress" class="save-btn">💾 Save Progress</button>
+                    <button id="next-word" class="nav-btn">Next →</button>
+                </div>
+            </div>
+
+            <div class="no-words" id="no-words-message" style="display: none;">
+                <h3>📚 No words available</h3>
+                <p>Add some words to start learning!</p>
+                <button class="main-btn primary" onclick="app.showScreen('add-word')">➕ Add Your First Word</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Word Screen -->
+    <section id="add-word-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>Add New Word</h2>
+            </header>
+
+            <form id="add-word-form" class="word-form">
+                <div class="form-group">
+                    <label for="new-english">English Word *</label>
+                    <input type="text" id="new-english" required>
+                    <span class="error-message" id="english-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-turkish">Turkish Translation *</label>
+                    <input type="text" id="new-turkish" required>
+                    <span class="error-message" id="turkish-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-part-of-speech">Part of Speech</label>
+                    <select id="new-part-of-speech">
+                        <option value="">Select Part of Speech</option>
+                        <option value="noun">Noun</option>
+                        <option value="verb">Verb</option>
+                        <option value="adjective">Adjective</option>
+                        <option value="adverb">Adverb</option>
+                        <option value="preposition">Preposition</option>
+                        <option value="conjunction">Conjunction</option>
+                        <option value="interjection">Interjection</option>
+                        <option value="pronoun">Pronoun</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-level">Level</label>
+                    <select id="new-level">
+                        <option value="">Select Level</option>
+                        <option value="A1">A1 - Beginner</option>
+                        <option value="A2">A2 - Elementary</option>
+                        <option value="B1">B1 - Intermediate</option>
+                        <option value="B2">B2 - Upper Intermediate</option>
+                        <option value="C1">C1 - Advanced</option>
+                        <option value="C2">C2 - Proficiency</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="new-phrasal-verb">
+                        <span class="checkmark-box"></span>
+                        This is a phrasal verb
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-definition">English Definition</label>
+                    <textarea id="new-definition" rows="3" placeholder="Brief definition of the word in English"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-turkish-definition">Turkish Definition</label>
+                    <textarea id="new-turkish-definition" rows="3" placeholder="Kelimenin Türkçe tanımı"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-synonyms">Synonyms (comma separated)</label>
+                    <input type="text" id="new-synonyms" placeholder="similar, alike, equivalent">
+                </div>
+
+                <div class="form-group">
+                    <label for="new-antonyms">Antonyms (comma separated)</label>
+                    <input type="text" id="new-antonyms" placeholder="different, opposite, contrary">
+                </div>
+
+                <div class="form-group">
+                    <label for="new-examples">Examples (one per line)</label>
+                    <textarea id="new-examples" rows="4" placeholder="Example sentence 1&#10;Example sentence 2&#10;Example sentence 3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-category">Category</label>
+                    <select id="new-category">
+                        <option value="">Select Category (Optional)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-image">Upload Image</label>
+                    <input type="file" id="new-image" accept="image/*">
+                    <div id="image-preview"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="main-btn primary">➕ Add Word</button>
+                    <button type="button" id="clear-form" class="main-btn secondary">🗑️ Clear Form</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Categories Screen -->
+    <section id="categories-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>Categories</h2>
+            </header>
+
+            <div class="categories-content">
+                <div class="add-category-section">
+                    <h3>Create New Category</h3>
+                    <div class="category-form">
+                        <input type="text" id="new-category-name" placeholder="Category Name" maxlength="50">
+                        <input type="text" id="new-category-description" placeholder="Description (Optional)" maxlength="100">
+                        <button id="create-category" class="main-btn primary">➕ Create Category</button>
+                    </div>
+                </div>
+
+                <div class="categories-grid" id="categories-grid">
+                    <!-- Categories will be populated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Difficult Words Screen -->
+    <section id="difficult-words-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>⚠️ Difficult Words</h2>
+            </header>
+
+            <!-- Enhanced Quiz Customization Panel -->
+            <div class="quiz-customization" id="difficult-quiz-customization" style="display: none;">
+                <h3>🎯 Personalized Quiz Settings</h3>
+                <div class="quiz-settings">
+                    <div class="setting-group">
+                        <label>Number of Words:</label>
+                        <select id="difficult-quiz-word-count">
+                            <option value="5">5 Words</option>
+                            <option value="10" selected>10 Words</option>
+                            <option value="15">15 Words</option>
+                            <option value="20">20 Words</option>
+                            <option value="all">All Words</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Quiz Type:</label>
+                        <select id="difficult-quiz-type">
+                            <option value="mixed">Mixed Quiz (All Types)</option>
+                            <option value="turkish-to-english-only">Turkish to English Only</option>
+                            <option value="english-to-turkish-only">English to Turkish Only</option>
+                            <option value="writing-only">Writing Practice Only</option>
+                            <option value="audio-only">Listening Practice Only</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Word Selection:</label>
+                        <select id="difficult-word-selection">
+                            <option value="random" selected>Random Selection</option>
+                            <option value="alphabetical">Alphabetical Order</option>
+                            <option value="difficulty">By Difficulty Level</option>
+                            <option value="recent">Recently Added First</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="difficult-repeat-incorrect">
+                            <span class="checkmark-box"></span>
+                            Repeat incorrect answers at end
+                        </label>
+                    </div>
+                </div>
+                <button id="start-difficult-quiz" class="main-btn primary">🎯 Start Personalized Quiz</button>
+            </div>
+
+            <div class="words-list" id="difficult-words-list">
+                <!-- Difficult words will be populated here -->
+            </div>
+
+            <div class="no-words" id="no-difficult-words" style="display: none;">
+                <h3>🎯 No difficult words yet!</h3>
+                <p>Words you mark as difficult during practice will appear here.</p>
+                <button class="main-btn primary" onclick="app.showScreen('learning')">📚 Start Learning</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Favorite Words Screen -->
+    <section id="favorite-words-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>⭐ Favorite Words</h2>
+            </header>
+
+            <!-- Enhanced Quiz Customization Panel -->
+            <div class="quiz-customization" id="favorite-quiz-customization" style="display: none;">
+                <h3>⭐ Personalized Favorite Words Quiz</h3>
+                <div class="quiz-settings">
+                    <div class="setting-group">
+                        <label>Number of Words:</label>
+                        <select id="favorite-quiz-word-count">
+                            <option value="5">5 Words</option>
+                            <option value="10" selected>10 Words</option>
+                            <option value="15">15 Words</option>
+                            <option value="20">20 Words</option>
+                            <option value="all">All Words</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Quiz Type:</label>
+                        <select id="favorite-quiz-type">
+                            <option value="mixed">Mixed Quiz (All Types)</option>
+                            <option value="turkish-to-english-only">Turkish to English Only</option>
+                            <option value="english-to-turkish-only">English to Turkish Only</option>
+                            <option value="writing-only">Writing Practice Only</option>
+                            <option value="audio-only">Listening Practice Only</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Word Selection:</label>
+                        <select id="favorite-word-selection">
+                            <option value="random" selected>Random Selection</option>
+                            <option value="alphabetical">Alphabetical Order</option>
+                            <option value="difficulty">By Difficulty Level</option>
+                            <option value="recent">Recently Added First</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="favorite-repeat-incorrect">
+                            <span class="checkmark-box"></span>
+                            Repeat incorrect answers at end
+                        </label>
+                    </div>
+                </div>
+                <button id="start-favorite-quiz" class="main-btn primary">⭐ Start Personalized Quiz</button>
+            </div>
+
+            <div class="words-list" id="favorite-words-list">
+                <!-- Favorite words will be populated here -->
+            </div>
+
+            <div class="no-words" id="no-favorite-words" style="display: none;">
+                <h3>⭐ No favorite words yet!</h3>
+                <p>Words you mark as favorites during practice will appear here.</p>
+                <button class="main-btn primary" onclick="app.showScreen('learning')">📚 Start Learning</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dictionary Screen -->
+    <section id="dictionary-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>📖 Dictionary</h2>
+            </header>
+
+            <div class="dictionary-controls">
+                <div class="search-controls">
+                    <input type="text" id="dictionary-search" placeholder="Search words..." class="search-input">
+                    <select id="dictionary-filter" class="filter-select">
+                        <option value="all">All Words</option>
+                        <option value="learned">Learned</option>
+                        <option value="difficult">Difficult</option>
+                        <option value="favorite">Favorite</option>
+                    </select>
+                    <select id="dictionary-sort" class="filter-select">
+                        <option value="alphabetical">A-Z</option>
+                        <option value="reverse-alphabetical">Z-A</option>
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="dictionary-stats" id="dictionary-stats">
+                <div class="stat-item">
+                    <span id="showing-count">0</span>
+                    <span class="stat-label">Showing</span>
+                </div>
+                <div class="stat-item">
+                    <span id="total-count">0</span>
+                    <span class="stat-label">Total</span>
+                </div>
+            </div>
+
+            <div class="words-list" id="dictionary-list">
+                <!-- Dictionary words will be populated here -->
+            </div>
+
+            <div class="no-words" id="no-dictionary-words" style="display: none;">
+                <h3>📚 No words in dictionary</h3>
+                <p>Add some words to build your vocabulary!</p>
+                <button class="main-btn primary" onclick="app.showScreen('add-word')">➕ Add Your First Word</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notes Screen -->
+    <section id="notes-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>📝 Notes</h2>
+            </header>
+
+            <div class="notes-content">
+                <div class="add-note-section">
+                    <h3>Add New Note</h3>
+                    <div class="note-form">
+                        <input type="text" id="new-note-title" placeholder="Note Title" maxlength="100">
+                        <textarea id="new-note-content" placeholder="Note Content" rows="4"></textarea>
+                        <button id="add-note" class="main-btn primary">➕ Add Note</button>
+                    </div>
+                </div>
+
+                <div class="notes-list" id="notes-list">
+                    <!-- Notes will be populated here -->
+                </div>
+
+                <div class="no-notes" id="no-notes" style="display: none;">
+                    <h3>📝 No notes yet!</h3>
+                    <p>Add notes to remember important vocabulary tips and insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Note Modal -->
+    <div id="edit-note-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Note</h3>
+                <button class="modal-close" id="close-edit-note-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-note-title">Note Title *</label>
+                    <input type="text" id="edit-note-title" required maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="edit-note-content">Note Content *</label>
+                    <textarea id="edit-note-content" required rows="6"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button id="save-note-changes" class="main-btn primary">💾 Save Changes</button>
+                    <button id="cancel-note-edit" class="main-btn secondary">❌ Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Management Screen -->
+    <section id="data-management-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>💾 Data Management</h2>
+            </header>
+
+            <div class="data-management-content">
+                <div class="data-section">
+                    <h3>📤 Export Data</h3>
+                    <p>Download your vocabulary data as a JSON file for backup.</p>
+                    <button id="export-data" class="main-btn primary">📤 Export All Data</button>
+                </div>
+
+                <div class="data-section">
+                    <h3>📥 Import Data</h3>
+                    <p>Import vocabulary data from a JSON file. This will add to your existing data.</p>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                    <button id="import-data" class="main-btn secondary">📥 Import Data</button>
+                </div>
+
+                <div class="data-section">
+                    <h3>📊 Progress Analysis</h3>
+                    <p>Generate comprehensive reports analyzing your learning progress, performance metrics, and receive personalized recommendations.</p>
+                    <button id="generate-progress-report" class="main-btn primary">📄 Generate Detailed Progress Report</button>
+                </div>
+
+                <div class="data-section danger-zone">
+                    <h3>🗑️ Clear All Data</h3>
+                    <p class="warning">⚠️ This will permanently delete all your words, categories, and progress. This action cannot be undone!</p>
+                    <button id="clear-all-data" class="main-btn danger">🗑️ Clear All Data</button>
+                </div>
+
+                <div class="data-stats">
+                    <h3>📊 Data Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number" id="data-words-count">0</span>
+                            <span class="stat-label">Total Words</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="data-categories-count">0</span>
+                            <span class="stat-label">Categories</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="data-notes-count">0</span>
+                            <span class="stat-label">Notes</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="data-storage-size">0 KB</span>
+                            <span class="stat-label">Storage Used</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics & Reports Screen -->
+    <section id="statistics-screen" class="screen">
+        <div class="container">
+            <header class="screen-header">
+                <button class="back-btn" onclick="app.showScreen('home')">← Back to Home</button>
+                <h2>📊 Statistics & Reports</h2>
+            </header>
+
+            <div class="statistics-content">
+                <!-- Statistics Navigation -->
+                <div class="stats-nav">
+                    <button id="overview-tab" class="stats-tab active">📈 Overview</button>
+                    <button id="detailed-tab" class="stats-tab">📋 Detailed Analysis</button>
+                    <button id="progress-tab" class="stats-tab">📊 Progress Tracking</button>
+                    <button id="reports-tab" class="stats-tab">📄 PDF Reports</button>
+                </div>
+
+                <!-- Overview Section -->
+                <div id="overview-section" class="stats-section active">
+                    <div class="overview-grid">
+                        <div class="overview-card primary">
+                            <div class="card-icon">📚</div>
+                            <div class="card-content">
+                                <h3 id="overview-total-words">0</h3>
+                                <p>Total Words</p>
+                            </div>
+                        </div>
+                        <div class="overview-card success">
+                            <div class="card-icon">✅</div>
+                            <div class="card-content">
+                                <h3 id="overview-learned-words">0</h3>
+                                <p>Words Learned</p>
+                            </div>
+                        </div>
+                        <div class="overview-card warning">
+                            <div class="card-icon">⭐</div>
+                            <div class="card-content">
+                                <h3 id="overview-favorite-words">0</h3>
+                                <p>Favorite Words</p>
+                            </div>
+                        </div>
+                        <div class="overview-card danger">
+                            <div class="card-icon">⚠️</div>
+                            <div class="card-content">
+                                <h3 id="overview-difficult-words">0</h3>
+                                <p>Difficult Words</p>
+                            </div>
+                        </div>
+                        <div class="overview-card info">
+                            <div class="card-icon">🔥</div>
+                            <div class="card-content">
+                                <h3 id="overview-streak">0</h3>
+                                <p>Day Streak</p>
+                            </div>
+                        </div>
+                        <div class="overview-card secondary">
+                            <div class="card-icon">📁</div>
+                            <div class="card-content">
+                                <h3 id="overview-categories">0</h3>
+                                <p>Categories</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Progress Chart -->
+                    <div class="progress-chart-container">
+                        <h3>Learning Progress Overview</h3>
+                        <div class="chart-placeholder">
+                            <div class="progress-visual">
+                                <div class="progress-circle">
+                                    <svg width="200" height="200">
+                                        <circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="20"/>
+                                        <circle id="progress-circle" cx="100" cy="100" r="80" fill="none" stroke="var(--primary-color)" 
+                                                stroke-width="20" stroke-linecap="round" 
+                                                stroke-dasharray="502.65" stroke-dashoffset="502.65"/>
+                                    </svg>
+                                    <div class="progress-text">
+                                        <span id="progress-percentage">0%</span>
+                                        <small>Learned</small>
+                                    </div>
+                                </div>
+                                <div class="progress-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Words Added This Week:</span>
+                                        <span class="detail-value" id="words-this-week">0</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Quiz Sessions Completed:</span>
+                                        <span class="detail-value" id="quiz-sessions">0</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Average Quiz Score:</span>
+                                        <span class="detail-value" id="average-score">0%</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Total Study Time:</span>
+                                        <span class="detail-value" id="total-study-time">0 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Analysis Section -->
+                <div id="detailed-section" class="stats-section">
+                    <div class="detailed-analysis">
+                        <h3>📋 Detailed Learning Analysis</h3>
+                        
+                        <!-- Category Breakdown -->
+                        <div class="analysis-card">
+                            <h4>Category Performance</h4>
+                            <div id="category-breakdown" class="category-list">
+                                <!-- Categories will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Difficulty Analysis -->
+                        <div class="analysis-card">
+                            <h4>Difficulty Level Distribution</h4>
+                            <div class="difficulty-stats">
+                                <div class="difficulty-item">
+                                    <span class="difficulty-label">Beginner:</span>
+                                    <div class="difficulty-bar">
+                                        <div class="difficulty-fill beginner" id="beginner-fill"></div>
+                                    </div>
+                                    <span class="difficulty-count" id="beginner-count">0</span>
+                                </div>
+                                <div class="difficulty-item">
+                                    <span class="difficulty-label">Intermediate:</span>
+                                    <div class="difficulty-bar">
+                                        <div class="difficulty-fill intermediate" id="intermediate-fill"></div>
+                                    </div>
+                                    <span class="difficulty-count" id="intermediate-count">0</span>
+                                </div>
+                                <div class="difficulty-item">
+                                    <span class="difficulty-label">Advanced:</span>
+                                    <div class="difficulty-bar">
+                                        <div class="difficulty-fill advanced" id="advanced-fill"></div>
+                                    </div>
+                                    <span class="difficulty-count" id="advanced-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Performance -->
+                        <div class="analysis-card">
+                            <h4>Quiz Performance Breakdown</h4>
+                            <div class="quiz-stats">
+                                <div class="quiz-type-stats">
+                                    <div class="quiz-type-item">
+                                        <span class="quiz-type-label">Turkish to English:</span>
+                                        <span class="quiz-type-score" id="tr-en-score">0%</span>
+                                    </div>
+                                    <div class="quiz-type-item">
+                                        <span class="quiz-type-label">English to Turkish:</span>
+                                        <span class="quiz-type-score" id="en-tr-score">0%</span>
+                                    </div>
+                                    <div class="quiz-type-item">
+                                        <span class="quiz-type-label">Writing Practice:</span>
+                                        <span class="quiz-type-score" id="writing-score">0%</span>
+                                    </div>
+                                    <div class="quiz-type-item">
+                                        <span class="quiz-type-label">Audio Practice:</span>
+                                        <span class="quiz-type-score" id="audio-score">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracking Section -->
+                <div id="progress-section" class="stats-section">
+                    <div class="progress-tracking">
+                        <h3>📊 Progress Tracking</h3>
+                        
+                        <div class="tracking-cards">
+                            <div class="tracking-card">
+                                <h4>Weekly Goals</h4>
+                                <div class="goal-progress">
+                                    <div class="goal-item">
+                                        <span>Words to Learn: <span id="weekly-goal">10</span></span>
+                                        <div class="goal-bar">
+                                            <div class="goal-fill" id="weekly-progress"></div>
+                                        </div>
+                                        <span class="goal-status" id="weekly-status">0/10</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tracking-card">
+                                <h4>Learning Streaks</h4>
+                                <div class="streak-info">
+                                    <div class="streak-item">
+                                        <span class="streak-label">Current Streak:</span>
+                                        <span class="streak-value" id="current-streak">0 days</span>
+                                    </div>
+                                    <div class="streak-item">
+                                        <span class="streak-label">Longest Streak:</span>
+                                        <span class="streak-value" id="longest-streak">0 days</span>
+                                    </div>
+                                    <div class="streak-item">
+                                        <span class="streak-label">This Week:</span>
+                                        <span class="streak-value" id="week-activity">0/7 days</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tracking-card">
+                                <h4>Recent Activity</h4>
+                                <div class="activity-log" id="recent-activity">
+                                    <!-- Recent activities will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PDF Reports Section -->
+                <div id="reports-section" class="stats-section">
+                    <div class="reports-generator">
+                        <h3>📄 PDF Reports</h3>
+                        
+                        <div class="report-options">
+                            <div class="report-card">
+                                <h4>Learning Summary Report</h4>
+                                <p>Comprehensive overview of your learning progress, statistics, and achievements</p>
+                                <div class="report-settings">
+                                    <label>
+                                        <input type="checkbox" id="include-words" checked>
+                                        Include word list
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="include-categories" checked>
+                                        Include category breakdown
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="include-progress" checked>
+                                        Include progress charts
+                                    </label>
+                                </div>
+                                <button id="generate-summary-pdf" class="main-btn primary">📄 Generate Summary PDF</button>
+                            </div>
+
+                            <div class="report-card">
+                                <h4>Detailed Analysis Report</h4>
+                                <p>In-depth analysis of quiz performance, difficulty levels, and learning patterns</p>
+                                <div class="report-settings">
+                                    <label>
+                                        <input type="checkbox" id="include-quiz-stats" checked>
+                                        Include quiz statistics
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="include-difficulty" checked>
+                                        Include difficulty analysis
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="include-recommendations" checked>
+                                        Include learning recommendations
+                                    </label>
+                                </div>
+                                <button id="generate-analysis-pdf" class="main-btn secondary">📊 Generate Analysis PDF</button>
+                            </div>
+
+                            <div class="report-card">
+                                <h4>Progress Timeline Report</h4>
+                                <p>Visual timeline of your learning journey with milestones and achievements</p>
+                                <div class="report-settings">
+                                    <label>
+                                        <input type="checkbox" id="include-timeline" checked>
+                                        Include progress timeline
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="include-milestones" checked>
+                                        Include milestone markers
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="include-streaks" checked>
+                                        Include streak information
+                                    </label>
+                                </div>
+                                <button id="generate-timeline-pdf" class="main-btn success">📈 Generate Timeline PDF</button>
+                            </div>
+
+                            <div class="report-card">
+                                <h4>Custom Report</h4>
+                                <p>Create a personalized report with selected data and custom date range</p>
+                                <div class="report-settings">
+                                    <div class="date-range">
+                                        <label>From: <input type="date" id="report-start-date"></label>
+                                        <label>To: <input type="date" id="report-end-date"></label>
+                                    </div>
+                                    <div class="custom-options">
+                                        <label><input type="checkbox" id="custom-overview">Overview Statistics</label>
+                                        <label><input type="checkbox" id="custom-words">Word Lists</label>
+                                        <label><input type="checkbox" id="custom-quizzes">Quiz Results</label>
+                                        <label><input type="checkbox" id="custom-progress">Progress Charts</label>
+                                    </div>
+                                </div>
+                                <button id="generate-custom-pdf" class="main-btn info">🎯 Generate Custom PDF</button>
+                            </div>
+                        </div>
+
+                        <div class="pdf-history">
+                            <h4>Recent Reports</h4>
+                            <div id="pdf-history-list" class="history-list">
+                                <p class="no-reports">No reports generated yet. Create your first report above!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Edit Word Modal -->
+    <div id="edit-word-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Word</h3>
+                <button class="modal-close" id="close-edit-modal">&times;</button>
+            </div>
+            <form id="edit-word-form">
+                <div class="form-group">
+                    <label for="edit-english">English Word *</label>
+                    <input type="text" id="edit-english" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-turkish">Turkish Translation *</label>
+                    <input type="text" id="edit-turkish" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-part-of-speech">Part of Speech</label>
+                    <select id="edit-part-of-speech">
+                        <option value="">Select...</option>
+                        <option value="noun">Noun</option>
+                        <option value="verb">Verb</option>
+                        <option value="adjective">Adjective</option>
+                        <option value="adverb">Adverb</option>
+                        <option value="preposition">Preposition</option>
+                        <option value="pronoun">Pronoun</option>
+                        <option value="conjunction">Conjunction</option>
+                        <option value="interjection">Interjection</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-level">Difficulty Level</label>
+                    <select id="edit-level">
+                        <option value="">Select...</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-definition">Definition</label>
+                    <textarea id="edit-definition" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-category">Category</label>
+                    <select id="edit-category">
+                        <option value="general">General</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="main-btn secondary" id="cancel-edit">Cancel</button>
+                    <button type="submit" class="main-btn primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quiz Personalization Panel -->
+    <div id="quiz-personalization" class="quiz-personalization" style="display: none;">
+        <h4>🎯 Personalize Your Quiz Experience</h4>
+        <div class="form-group">
+            <label for="quiz-repeat-count">How many times to repeat each word?</label>
+            <input type="number" id="quiz-repeat-count" min="1" max="10" value="1" placeholder="Number of repetitions">
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="quiz-pronounce-auto" checked>
+                Automatically pronounce words after questions
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="quiz-show-definitions" checked>
+                Show word definitions during quiz
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="quiz-difficulty-filter">Filter by difficulty level:</label>
+            <select id="quiz-difficulty-filter">
+                <option value="all">All Levels</option>
+                <option value="beginner">Beginner Only</option>
+                <option value="intermediate">Intermediate Only</option>
+                <option value="advanced">Advanced Only</option>
+            </select>
+        </div>
+        <button id="apply-quiz-settings" class="main-btn primary">Apply Settings & Start Quiz</button>
+        <button id="close-quiz-settings" class="main-btn secondary">Close</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://www.instagram.com/the_nivoraxen" target="_blank" rel="noopener noreferrer">
+                    <div class="instagram-icon">📷</div>
+                    Instagram: @the_nivoraxen
+                </a>
+                <a href="mailto:legendHMT@hotmail.com">
+                    📧 Email: legendHMT@hotmail.com
+                </a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 VocabMaster. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Spelling Challenge Modal -->
+    <div id="spelling-challenge-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🏆 Spelling Challenge</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="spelling-challenge">
+                <div class="spelling-word" id="spelling-word">Listen and spell the word</div>
+                <button class="main-btn primary" id="play-spelling-audio">🔊 Play Audio</button>
+                <input type="text" class="spelling-input" id="spelling-input" placeholder="Type the word here">
+                <div class="spelling-feedback" id="spelling-feedback"></div>
+                <div class="form-actions">
+                    <button class="main-btn secondary" id="spelling-skip">Skip Word</button>
+                    <button class="main-btn primary" id="spelling-check">Check Spelling</button>
+                    <button class="main-btn primary" id="spelling-next" style="display: none;">Next Word</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Word Association Modal -->
+    <div id="word-association-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🧠 Word Association</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="word-association">
+                <div class="association-game">
+                    <div class="main-word" id="association-main-word">Select the related word</div>
+                    <div class="association-options" id="association-options"></div>
+                    <div class="association-feedback" id="association-feedback"></div>
+                    <button class="main-btn primary" id="association-next" style="display: none;">Next Word</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Word of the Day Modal -->
+    <div id="word-of-day-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📅 Word of the Day</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="word-of-day">
+                <div class="featured-word" id="featured-word">
+                    <h2 id="daily-word">Loading...</h2>
+                    <p id="daily-translation">Loading...</p>
+                    <p id="daily-definition">Loading...</p>
+                </div>
+                <button class="main-btn primary" id="pronounce-daily">🔊 Pronounce</button>
+                <button class="main-btn secondary" id="add-daily-to-favorites">⭐ Add to Favorites</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
