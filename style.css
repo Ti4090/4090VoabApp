@@ -8655,6 +8655,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 /* Override all black text in black theme - MASTER OVERRIDE */
 [data-theme="black"] *:not(.checkmark):not(.icon) {
     color: #000000 !important;
+    
 }
 
 [data-theme="black"] * {
