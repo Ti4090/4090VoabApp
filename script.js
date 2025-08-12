@@ -6394,61 +6394,61 @@ Keep learning and expanding your vocabulary! 🚀📚
         this.currentPronunciationIndex = 0;
     }
 
-    // Daily Practice System
-    initializeDailyPractice() {
-        this.dailyPracticeData = {
-            lastPracticeDate: null,
-            streak: 0,
-            totalDays: 0,
-            currentWords: [],
-            currentIndex: 0,
-            scores: [],
-            isActive: false
-        };
-        
-        this.loadDailyPracticeData();
-        this.checkDailyPractice();
-    }
+   // Daily Practice System
+initializeDailyPractice() {
+    this.dailyPracticeData = {
+        lastPracticeDate: null,
+        streak: 0,
+        totalDays: 0,
+        currentWords: [],
+        currentIndex: 0,
+        scores: [],
+        isActive: false
+    };
 
-    loadDailyPracticeData() {
-        const saved = localStorage.getItem('vocabmaster_daily_practice');
-        if (saved) {
-            this.dailyPracticeData = { ...this.dailyPracticeData, ...JSON.parse(saved) };
-        }
-    }
+    this.loadDailyPracticeData();
+    this.checkDailyPractice();
+}
 
-    saveDailyPracticeData() {
-        localStorage.setItem('vocabmaster_daily_practice', JSON.stringify(this.dailyPracticeData));
+loadDailyPracticeData() {
+    const saved = localStorage.getItem('vocabmaster_daily_practice');
+    if (saved) {
+        this.dailyPracticeData = { ...this.dailyPracticeData, ...JSON.parse(saved) };
     }
+}
 
-    checkDailyPractice() {
-        const today = new Date().toDateString();
-        const lastPractice = this.dailyPracticeData.lastPracticeDate;
-        
-        // Check if it's a new day and user has learned words
-        if (lastPractice !== today && this.learnedWords.size > 0) {
-            setTimeout(() => {
-                this.showDailyPracticePrompt();
-            }, 1000);
-        }
+saveDailyPracticeData() {
+    localStorage.setItem('vocabmaster_daily_practice', JSON.stringify(this.dailyPracticeData));
+}
+
+checkDailyPractice() {
+    const today = new Date().toDateString();
+    const lastPractice = this.dailyPracticeData.lastPracticeDate;
+
+    // Check if it's a new day and user has learned words
+    if (lastPractice !== today && this.learnedWords.size > 0) {
+        setTimeout(() => {
+            this.showDailyPracticePrompt();
+        }, 1000);
     }
+}
 
-    showDailyPracticePrompt() {
-        const learnedWordsArray = Array.from(this.learnedWords).map(id => 
-            this.words.find(w => w.id === id)
-        ).filter(word => word);
-        
-        if (learnedWordsArray.length === 0) return;
-        
-        // Create daily practice prompt overlay
-        const promptHTML = `
+showDailyPracticePrompt() {
+    const learnedWordsArray = Array.from(this.learnedWords).map(id =>
+        this.words.find(w => w.id === id)
+    ).filter(word => word);
+
+    if (learnedWordsArray.length === 0) return;
+
+    // Create daily practice prompt overlay
+    const promptHTML = `
             <div id="daily-practice-overlay" class="daily-practice-overlay">
                 <div class="daily-practice-prompt">
                     <div class="prompt-header">
                         <h2>🌅 Daily Practice Time!</h2>
                         <p>Review your learned words to maintain your progress</p>
                     </div>
-                    
+
                     <div class="practice-stats">
                         <div class="stat-item">
                             <span class="stat-number">${learnedWordsArray.length}</span>
@@ -6463,12 +6463,12 @@ Keep learning and expanding your vocabulary! 🚀📚
                             <span class="stat-label">Minutes</span>
                         </div>
                     </div>
-                    
+
                     <div class="prompt-message">
                         <p>Keep your vocabulary fresh with a quick daily review!</p>
                         <p class="practice-benefit">Daily practice helps move words to long-term memory 🧠</p>
                     </div>
-                    
+
                     <div class="prompt-actions">
                         <button id="start-daily-practice" class="daily-btn primary">
                             ✨ Start Daily Practice
@@ -6483,76 +6483,81 @@ Keep learning and expanding your vocabulary! 🚀📚
                 </div>
             </div>
         `;
-        
-        document.body.insertAdjacentHTML('beforeend', promptHTML);
+
+    document.body.insertAdjacentHTML('beforeend', promptHTML);
+
+    // Düzeltme: Butonlara event listener ekliyoruz.
+    document.getElementById('start-daily-practice').addEventListener('click', () => this.startDailyPractice());
+    document.getElementById('skip-daily-practice').addEventListener('click', () => this.skipDailyPractice());
+    document.getElementById('close-daily-practice').addEventListener('click', () => this.closeDailyPractice());
+}
+
+startDailyPractice() {
+    // Remove the prompt overlay
+    const overlay = document.getElementById('daily-practice-overlay');
+    if (overlay) {
+        overlay.remove();
     }
 
-    startDailyPractice() {
-        // Remove the prompt overlay
-        const overlay = document.getElementById('daily-practice-overlay');
-        if (overlay) {
-            overlay.remove();
-        }
-        
-        // Prepare daily practice session
-        const learnedWordsArray = Array.from(this.learnedWords).map(id => 
-            this.words.find(w => w.id === id)
-        ).filter(word => word);
-        
-        if (learnedWordsArray.length === 0) {
-            this.showToast('No learned words available for practice.', 'info');
-            return;
-        }
-        
-        // Shuffle learned words for varied practice
-        this.dailyPracticeData.currentWords = this.shuffleArray(learnedWordsArray);
-        this.dailyPracticeData.currentIndex = 0;
-        this.dailyPracticeData.scores = [];
-        this.dailyPracticeData.isActive = true;
-        
-        this.showScreen('learning');
-        this.showDailyPracticeInterface();
-        this.startDailyPracticeSession();
+    // Prepare daily practice session
+    const learnedWordsArray = Array.from(this.learnedWords).map(id =>
+        this.words.find(w => w.id === id)
+    ).filter(word => word);
+
+    if (learnedWordsArray.length === 0) {
+        this.showToast('No learned words available for practice.', 'info');
+        return;
     }
 
-    skipDailyPractice() {
-        const overlay = document.getElementById('daily-practice-overlay');
-        if (overlay) {
-            overlay.remove();
-        }
-        this.showToast('Daily practice skipped. You can start it anytime from the home screen!', 'info');
+    // Shuffle learned words for varied practice
+    this.dailyPracticeData.currentWords = this.shuffleArray(learnedWordsArray);
+    this.dailyPracticeData.currentIndex = 0;
+    this.dailyPracticeData.scores = [];
+    this.dailyPracticeData.isActive = true;
+
+    this.showScreen('learning');
+    this.showDailyPracticeInterface();
+    this.startDailyPracticeSession();
+}
+
+skipDailyPractice() {
+    const overlay = document.getElementById('daily-practice-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
+    this.showToast('Daily practice skipped. You can start it anytime from the home screen!', 'info');
+}
+
+closeDailyPractice() {
+    const overlay = document.getElementById('daily-practice-overlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+showDailyPracticeInterface() {
+    // Hide other learning modes
+    document.getElementById('word-selection-phase').style.display = 'none';
+    document.getElementById('quiz-phase').style.display = 'none';
+    document.getElementById('word-display').style.display = 'none';
+    const pronunciationInterface = document.getElementById('pronunciation-practice');
+    if (pronunciationInterface) {
+        pronunciationInterface.style.display = 'none';
     }
 
-    closeDailyPractice() {
-        const overlay = document.getElementById('daily-practice-overlay');
-        if (overlay) {
-            overlay.remove();
-        }
+    // Show or create daily practice interface
+    let dailyInterface = document.getElementById('daily-practice-interface');
+    if (!dailyInterface) {
+        this.createDailyPracticeInterface();
+    } else {
+        dailyInterface.style.display = 'block';
     }
+}
 
-    showDailyPracticeInterface() {
-        // Hide other learning modes
-        document.getElementById('word-selection-phase').style.display = 'none';
-        document.getElementById('quiz-phase').style.display = 'none';
-        document.getElementById('word-display').style.display = 'none';
-        const pronunciationInterface = document.getElementById('pronunciation-practice');
-        if (pronunciationInterface) {
-            pronunciationInterface.style.display = 'none';
-        }
-        
-        // Show or create daily practice interface
-        let dailyInterface = document.getElementById('daily-practice-interface');
-        if (!dailyInterface) {
-            this.createDailyPracticeInterface();
-        } else {
-            dailyInterface.style.display = 'block';
-        }
-    }
+createDailyPracticeInterface() {
+    const learningScreen = document.getElementById('learning-screen');
 
-    createDailyPracticeInterface() {
-        const learningScreen = document.getElementById('learning-screen');
-        
-        const dailyHTML = `
+    const dailyHTML = `
             <div id="daily-practice-interface" class="daily-practice-container">
                 <div class="daily-practice-header">
                     <h3>🌅 Daily Practice</h3>
@@ -6568,20 +6573,19 @@ Keep learning and expanding your vocabulary! 🚀📚
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="daily-word-card">
                     <div class="word-display">
                         <h2 id="daily-word">Loading...</h2>
                         <p id="daily-translation">Loading...</p>
                     </div>
-                    
+
                     <div class="daily-question">
                         <p id="daily-question-text">What does this word mean?</p>
                         <div id="daily-options" class="daily-options">
-                            <!-- Options will be populated dynamically -->
-                        </div>
+                            </div>
                     </div>
-                    
+
                     <div class="daily-feedback" id="daily-feedback" style="display: none;">
                         <div class="feedback-content">
                             <p id="daily-feedback-text"></p>
@@ -6593,190 +6597,200 @@ Keep learning and expanding your vocabulary! 🚀📚
                         <button id="daily-next-word" class="daily-btn primary">Next Word</button>
                     </div>
                 </div>
-                
+
                 <div class="daily-controls">
                     <button id="daily-play-audio" class="daily-control-btn">🔊 Listen</button>
                     <button id="exit-daily-practice" class="daily-control-btn secondary">← Back to Home</button>
                 </div>
             </div>
         `;
-        
-        learningScreen.insertAdjacentHTML('beforeend', dailyHTML);
-        this.setupDailyPracticeEventListeners();
-    }
 
-    setupDailyPracticeEventListeners() {
-        this.addEventListenerSafely('daily-play-audio', 'click', () => {
-            if (this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex]) {
-                this.speakWord(this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex].english);
-            }
-        });
-        
-        this.addEventListenerSafely('daily-next-word', 'click', () => {
-            this.nextDailyWord();
-        });
-        
-        this.addEventListenerSafely('exit-daily-practice', 'click', () => {
-            this.exitDailyPractice();
-        });
-    }
+    learningScreen.insertAdjacentHTML('beforeend', dailyHTML);
+    this.setupDailyPracticeEventListeners();
+}
 
-    startDailyPracticeSession() {
-        if (this.dailyPracticeData.currentWords.length === 0) {
-            this.showToast('No words available for daily practice.', 'warning');
-            return;
+// Düzeltme: `addEventListenerSafely` fonksiyonu ekleniyor.
+addEventListenerSafely(elementId, eventType, callback) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.addEventListener(eventType, callback);
+    } else {
+        console.error(`Element with ID "${elementId}" not found.`);
+    }
+}
+
+setupDailyPracticeEventListeners() {
+    this.addEventListenerSafely('daily-play-audio', 'click', () => {
+        if (this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex]) {
+            this.speakWord(this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex].english);
         }
-        
-        this.displayCurrentDailyWord();
+    });
+
+    this.addEventListenerSafely('daily-next-word', 'click', () => {
+        this.nextDailyWord();
+    });
+
+    this.addEventListenerSafely('exit-daily-practice', 'click', () => {
+        this.exitDailyPractice();
+    });
+}
+
+startDailyPracticeSession() {
+    if (this.dailyPracticeData.currentWords.length === 0) {
+        this.showToast('No words available for daily practice.', 'warning');
+        return;
     }
 
-    displayCurrentDailyWord() {
-        const currentIndex = this.dailyPracticeData.currentIndex;
-        const totalWords = this.dailyPracticeData.currentWords.length;
-        
-        if (currentIndex >= totalWords) {
-            this.completeDailyPractice();
-            return;
+    this.displayCurrentDailyWord();
+}
+
+displayCurrentDailyWord() {
+    const currentIndex = this.dailyPracticeData.currentIndex;
+    const totalWords = this.dailyPracticeData.currentWords.length;
+
+    if (currentIndex >= totalWords) {
+        this.completeDailyPractice();
+        return;
+    }
+
+    const currentWord = this.dailyPracticeData.currentWords[currentIndex];
+
+    // Update progress
+    document.getElementById('daily-progress-text').textContent = `Word ${currentIndex + 1} of ${totalWords}`;
+    const progressPercentage = (currentIndex / totalWords) * 100;
+    document.getElementById('daily-progress-fill').style.width = `${progressPercentage}%`;
+
+    // Display word
+    document.getElementById('daily-word').textContent = currentWord.english;
+    document.getElementById('daily-translation').textContent = currentWord.turkish;
+
+    // Create multiple choice question
+    this.createDailyQuestion(currentWord);
+
+    // Hide feedback initially
+    document.getElementById('daily-feedback').style.display = 'none';
+}
+
+createDailyQuestion(currentWord) {
+    const questionTypes = ['turkish-meaning', 'definition', 'usage'];
+    const questionType = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+
+    const questionElement = document.getElementById('daily-question-text');
+    const optionsElement = document.getElementById('daily-options');
+
+    let question, correctAnswer, wrongAnswers;
+
+    switch (questionType) {
+        case 'turkish-meaning':
+            question = `What is the Turkish meaning of "${currentWord.english}"?`;
+            correctAnswer = currentWord.turkish;
+            wrongAnswers = this.getRandomTurkishTranslations(currentWord.turkish, 3);
+            break;
+
+        case 'definition':
+            question = `What does "${currentWord.english}" mean?`;
+            correctAnswer = currentWord.definition || currentWord.turkish;
+            wrongAnswers = this.getRandomDefinitions(correctAnswer, 3);
+            break;
+
+        case 'usage':
+            question = `Which sentence correctly uses "${currentWord.english}"?`;
+            correctAnswer = this.generateUsageExample(currentWord);
+            wrongAnswers = this.generateWrongUsageExamples(currentWord, 3);
+            break;
+    }
+
+    questionElement.textContent = question;
+
+    // Create options array and shuffle
+    const options = [correctAnswer, ...wrongAnswers];
+    const shuffledOptions = this.shuffleArray(options);
+
+    // Generate option buttons
+    optionsElement.innerHTML = '';
+    shuffledOptions.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'daily-option';
+        button.textContent = option;
+        button.onclick = () => this.selectDailyOption(option, correctAnswer, button);
+        optionsElement.appendChild(button);
+    });
+}
+
+selectDailyOption(selectedOption, correctAnswer, buttonElement) {
+    const isCorrect = selectedOption === correctAnswer;
+    const allOptions = document.querySelectorAll('.daily-option');
+
+    // Disable all options
+    allOptions.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === correctAnswer) {
+            btn.classList.add('correct');
+        } else if (btn === buttonElement && !isCorrect) {
+            btn.classList.add('incorrect');
         }
-        
-        const currentWord = this.dailyPracticeData.currentWords[currentIndex];
-        
-        // Update progress
-        document.getElementById('daily-progress-text').textContent = `Word ${currentIndex + 1} of ${totalWords}`;
-        const progressPercentage = (currentIndex / totalWords) * 100;
-        document.getElementById('daily-progress-fill').style.width = `${progressPercentage}%`;
-        
-        // Display word
-        document.getElementById('daily-word').textContent = currentWord.english;
-        document.getElementById('daily-translation').textContent = currentWord.turkish;
-        
-        // Create multiple choice question
-        this.createDailyQuestion(currentWord);
-        
-        // Hide feedback initially
-        document.getElementById('daily-feedback').style.display = 'none';
+    });
+
+    // Record the result
+    this.dailyPracticeData.scores.push({
+        word: this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex],
+        correct: isCorrect,
+        timestamp: Date.now()
+    });
+
+    // Show feedback
+    this.showDailyFeedback(isCorrect);
+}
+
+showDailyFeedback(isCorrect) {
+    const currentWord = this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex];
+    const feedbackElement = document.getElementById('daily-feedback');
+    const feedbackText = document.getElementById('daily-feedback-text');
+    const definitionElement = document.getElementById('daily-word-definition');
+    const exampleElement = document.getElementById('daily-word-example');
+
+    if (isCorrect) {
+        feedbackText.innerHTML = '✅ Correct! Well done!';
+        feedbackElement.className = 'daily-feedback correct';
+    } else {
+        feedbackText.innerHTML = '❌ Not quite right. Let\'s review this word.';
+        feedbackElement.className = 'daily-feedback incorrect';
     }
 
-    createDailyQuestion(currentWord) {
-        const questionTypes = ['turkish-meaning', 'definition', 'usage'];
-        const questionType = questionTypes[Math.floor(Math.random() * questionTypes.length)];
-        
-        const questionElement = document.getElementById('daily-question-text');
-        const optionsElement = document.getElementById('daily-options');
-        
-        let question, correctAnswer, wrongAnswers;
-        
-        switch (questionType) {
-            case 'turkish-meaning':
-                question = `What is the Turkish meaning of "${currentWord.english}"?`;
-                correctAnswer = currentWord.turkish;
-                wrongAnswers = this.getRandomTurkishTranslations(currentWord.turkish, 3);
-                break;
-                
-            case 'definition':
-                question = `What does "${currentWord.english}" mean?`;
-                correctAnswer = currentWord.definition || currentWord.turkish;
-                wrongAnswers = this.getRandomDefinitions(correctAnswer, 3);
-                break;
-                
-            case 'usage':
-                question = `Which sentence correctly uses "${currentWord.english}"?`;
-                correctAnswer = this.generateUsageExample(currentWord);
-                wrongAnswers = this.generateWrongUsageExamples(currentWord, 3);
-                break;
-        }
-        
-        questionElement.textContent = question;
-        
-        // Create options array and shuffle
-        const options = [correctAnswer, ...wrongAnswers];
-        const shuffledOptions = this.shuffleArray(options);
-        
-        // Generate option buttons
-        optionsElement.innerHTML = '';
-        shuffledOptions.forEach((option, index) => {
-            const button = document.createElement('button');
-            button.className = 'daily-option';
-            button.textContent = option;
-            button.onclick = () => this.selectDailyOption(option, correctAnswer, button);
-            optionsElement.appendChild(button);
-        });
+    definitionElement.textContent = currentWord.definition || currentWord.turkish;
+    exampleElement.textContent = this.generateUsageExample(currentWord);
+
+    feedbackElement.style.display = 'block';
+}
+
+nextDailyWord() {
+    this.dailyPracticeData.currentIndex++;
+    this.displayCurrentDailyWord();
+}
+
+completeDailyPractice() {
+    const correctAnswers = this.dailyPracticeData.scores.filter(s => s.correct).length;
+    const totalQuestions = this.dailyPracticeData.scores.length;
+    const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
+
+    // Update streak and statistics
+    const today = new Date().toDateString();
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString();
+
+    if (this.dailyPracticeData.lastPracticeDate === yesterday) {
+        this.dailyPracticeData.streak++;
+    } else if (this.dailyPracticeData.lastPracticeDate !== today) {
+        this.dailyPracticeData.streak = 1;
     }
 
-    selectDailyOption(selectedOption, correctAnswer, buttonElement) {
-        const isCorrect = selectedOption === correctAnswer;
-        const allOptions = document.querySelectorAll('.daily-option');
-        
-        // Disable all options
-        allOptions.forEach(btn => {
-            btn.disabled = true;
-            if (btn.textContent === correctAnswer) {
-                btn.classList.add('correct');
-            } else if (btn === buttonElement && !isCorrect) {
-                btn.classList.add('incorrect');
-            }
-        });
-        
-        // Record the result
-        this.dailyPracticeData.scores.push({
-            word: this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex],
-            correct: isCorrect,
-            timestamp: Date.now()
-        });
-        
-        // Show feedback
-        this.showDailyFeedback(isCorrect);
-    }
+    this.dailyPracticeData.lastPracticeDate = today;
+    this.dailyPracticeData.totalDays++;
+    this.dailyPracticeData.isActive = false;
 
-    showDailyFeedback(isCorrect) {
-        const currentWord = this.dailyPracticeData.currentWords[this.dailyPracticeData.currentIndex];
-        const feedbackElement = document.getElementById('daily-feedback');
-        const feedbackText = document.getElementById('daily-feedback-text');
-        const definitionElement = document.getElementById('daily-word-definition');
-        const exampleElement = document.getElementById('daily-word-example');
-        
-        if (isCorrect) {
-            feedbackText.innerHTML = '✅ Correct! Well done!';
-            feedbackElement.className = 'daily-feedback correct';
-        } else {
-            feedbackText.innerHTML = '❌ Not quite right. Let\'s review this word.';
-            feedbackElement.className = 'daily-feedback incorrect';
-        }
-        
-        definitionElement.textContent = currentWord.definition || currentWord.turkish;
-        exampleElement.textContent = this.generateUsageExample(currentWord);
-        
-        feedbackElement.style.display = 'block';
-    }
+    this.saveDailyPracticeData();
 
-    nextDailyWord() {
-        this.dailyPracticeData.currentIndex++;
-        this.displayCurrentDailyWord();
-    }
-
-    completeDailyPractice() {
-        const correctAnswers = this.dailyPracticeData.scores.filter(s => s.correct).length;
-        const totalQuestions = this.dailyPracticeData.scores.length;
-        const accuracy = Math.round((correctAnswers / totalQuestions) * 100);
-        
-        // Update streak and statistics
-        const today = new Date().toDateString();
-        const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toDateString();
-        
-        if (this.dailyPracticeData.lastPracticeDate === yesterday) {
-            this.dailyPracticeData.streak++;
-        } else if (this.dailyPracticeData.lastPracticeDate !== today) {
-            this.dailyPracticeData.streak = 1;
-        }
-        
-        this.dailyPracticeData.lastPracticeDate = today;
-        this.dailyPracticeData.totalDays++;
-        this.dailyPracticeData.isActive = false;
-        
-        this.saveDailyPracticeData();
-        
-        // Show completion message
-        const completionHTML = `
+    // Show completion message
+    const completionHTML = `
             <div class="daily-practice-complete">
                 <h3>🎉 Daily Practice Complete!</h3>
                 <div class="completion-stats">
@@ -6797,119 +6811,123 @@ Keep learning and expanding your vocabulary! 🚀📚
                     ${this.getDailyStreakMessage()}
                 </div>
                 <div class="completion-actions">
-                    <button onclick="app.showScreen('home')" class="daily-btn primary">🏠 Back to Home</button>
-                    <button onclick="app.showStatistics()" class="daily-btn secondary">📊 View Progress</button>
+                    <button id="completion-home-btn" class="daily-btn primary">🏠 Back to Home</button>
+                    <button id="completion-stats-btn" class="daily-btn secondary">📊 View Progress</button>
                 </div>
             </div>
         `;
-        
-        const dailyInterface = document.getElementById('daily-practice-interface');
-        dailyInterface.innerHTML = completionHTML;
-        
-        // Show celebration toast
-        this.showToast(`Daily practice complete! ${accuracy}% accuracy - ${this.dailyPracticeData.streak} day streak!`, 'success');
-    }
 
-    getDailyStreakMessage() {
-        const streak = this.dailyPracticeData.streak;
-        
-        if (streak >= 30) {
-            return '🏆 Amazing! 30+ day streak! You\'re a vocabulary master!';
-        } else if (streak >= 14) {
-            return '🔥 Two weeks strong! Your dedication is paying off!';
-        } else if (streak >= 7) {
-            return '⭐ One week streak! Keep the momentum going!';
-        } else if (streak >= 3) {
-            return '🌟 Great consistency! You\'re building a strong habit!';
-        } else {
-            return '🌱 Every day counts! Keep practicing to build your streak!';
-        }
-    }
+    const dailyInterface = document.getElementById('daily-practice-interface');
+    dailyInterface.innerHTML = completionHTML;
 
-    exitDailyPractice() {
-        if (this.dailyPracticeData.isActive) {
-            // Ask for confirmation if practice is incomplete
-            if (confirm('Are you sure you want to exit daily practice? Your progress will be lost.')) {
-                this.dailyPracticeData.isActive = false;
-                this.showScreen('home');
-            }
-        } else {
+    // Düzeltme: Olay dinleyicileri ekleniyor.
+    document.getElementById('completion-home-btn').addEventListener('click', () => this.showScreen('home'));
+    document.getElementById('completion-stats-btn').addEventListener('click', () => this.showStatistics());
+
+    // Show celebration toast
+    this.showToast(`Daily practice complete! ${accuracy}% accuracy - ${this.dailyPracticeData.streak} day streak!`, 'success');
+}
+
+getDailyStreakMessage() {
+    const streak = this.dailyPracticeData.streak;
+
+    if (streak >= 30) {
+        return '🏆 Amazing! 30+ day streak! You\'re a vocabulary master!';
+    } else if (streak >= 14) {
+        return '🔥 Two weeks strong! Your dedication is paying off!';
+    } else if (streak >= 7) {
+        return '⭐ One week streak! Keep the momentum going!';
+    } else if (streak >= 3) {
+        return '🌟 Great consistency! You\'re building a strong habit!';
+    } else {
+        return '🌱 Every day counts! Keep practicing to build your streak!';
+    }
+}
+
+exitDailyPractice() {
+    if (this.dailyPracticeData.isActive) {
+        // Ask for confirmation if practice is incomplete
+        if (confirm('Are you sure you want to exit daily practice? Your progress will be lost.')) {
+            this.dailyPracticeData.isActive = false;
             this.showScreen('home');
         }
+    } else {
+        this.showScreen('home');
+    }
+}
+
+// Helper functions for daily practice
+getRandomTurkishTranslations(correctAnswer, count) {
+    const allTranslations = this.words.map(w => w.turkish).filter(t => t !== correctAnswer);
+    return this.getRandomItems(allTranslations, count);
+}
+
+getRandomDefinitions(correctAnswer, count) {
+    const allDefinitions = this.words.map(w => w.definition || w.turkish).filter(d => d !== correctAnswer);
+    return this.getRandomItems(allDefinitions, count);
+}
+
+generateUsageExample(word) {
+    // Simple example generation - could be expanded with more sophisticated examples
+    const examples = {
+        noun: [`The ${word.english} is very important.`, `I need a new ${word.english}.`],
+        verb: [`I ${word.english} every day.`, `Please ${word.english} this.`],
+        adjective: [`This is very ${word.english}.`, `The ${word.english} book is here.`],
+    };
+
+    const wordType = word.partOfSpeech || 'noun';
+    const exampleTemplates = examples[wordType] || examples.noun;
+
+    return exampleTemplates[Math.floor(Math.random() * exampleTemplates.length)];
+}
+
+generateWrongUsageExamples(word, count) {
+    const wrongExamples = [
+        `The ${word.english} flew away quickly.`,
+        `I ${word.english} to the store yesterday.`,
+        `This ${word.english} is very colorful.`,
+        `Please ${word.english} me the answer.`
+    ];
+
+    return this.getRandomItems(wrongExamples, count);
+}
+
+getRandomItems(array, count) {
+    const shuffled = this.shuffleArray([...array]);
+    return shuffled.slice(0, Math.min(count, shuffled.length));
+}
+
+// Add daily practice button to home screen
+addDailyPracticeToHome() {
+    const learnedCount = this.learnedWords.size;
+    if (learnedCount === 0) return;
+
+    const today = new Date().toDateString();
+    const lastPractice = this.dailyPracticeData.lastPracticeDate;
+
+    // Only show if not practiced today
+    if (lastPractice === today) return;
+
+    const homeScreen = document.getElementById('home-screen');
+    const existingButton = document.getElementById('daily-practice-home-btn');
+
+    if (existingButton) {
+        existingButton.remove();
     }
 
-    // Helper functions for daily practice
-    getRandomTurkishTranslations(correctAnswer, count) {
-        const allTranslations = this.words.map(w => w.turkish).filter(t => t !== correctAnswer);
-        return this.getRandomItems(allTranslations, count);
-    }
-
-    getRandomDefinitions(correctAnswer, count) {
-        const allDefinitions = this.words.map(w => w.definition || w.turkish).filter(d => d !== correctAnswer);
-        return this.getRandomItems(allDefinitions, count);
-    }
-
-    generateUsageExample(word) {
-        // Simple example generation - could be expanded with more sophisticated examples
-        const examples = {
-            noun: [`The ${word.english} is very important.`, `I need a new ${word.english}.`],
-            verb: [`I ${word.english} every day.`, `Please ${word.english} this.`],
-            adjective: [`This is very ${word.english}.`, `The ${word.english} book is here.`],
-        };
-        
-        const wordType = word.partOfSpeech || 'noun';
-        const exampleTemplates = examples[wordType] || examples.noun;
-        
-        return exampleTemplates[Math.floor(Math.random() * exampleTemplates.length)];
-    }
-
-    generateWrongUsageExamples(word, count) {
-        const wrongExamples = [
-            `The ${word.english} flew away quickly.`,
-            `I ${word.english} to the store yesterday.`,
-            `This ${word.english} is very colorful.`,
-            `Please ${word.english} me the answer.`
-        ];
-        
-        return this.getRandomItems(wrongExamples, count);
-    }
-
-    getRandomItems(array, count) {
-        const shuffled = this.shuffleArray([...array]);
-        return shuffled.slice(0, Math.min(count, shuffled.length));
-    }
-
-    // Add daily practice button to home screen
-    addDailyPracticeToHome() {
-        const learnedCount = this.learnedWords.size;
-        if (learnedCount === 0) return;
-        
-        const today = new Date().toDateString();
-        const lastPractice = this.dailyPracticeData.lastPracticeDate;
-        
-        // Only show if not practiced today
-        if (lastPractice === today) return;
-        
-        const homeScreen = document.getElementById('home-screen');
-        const existingButton = document.getElementById('daily-practice-home-btn');
-        
-        if (existingButton) {
-            existingButton.remove();
-        }
-        
-        const dailyPracticeBtn = document.createElement('button');
-        dailyPracticeBtn.id = 'daily-practice-home-btn';
-        dailyPracticeBtn.className = 'main-btn daily-practice-home';
-        dailyPracticeBtn.innerHTML = `
+    const dailyPracticeBtn = document.createElement('button');
+    dailyPracticeBtn.id = 'daily-practice-home-btn';
+    dailyPracticeBtn.className = 'main-btn daily-practice-home';
+    dailyPracticeBtn.innerHTML = `
             <span class="btn-icon">🌅</span>
             Daily Practice (${learnedCount} words)
         `;
-        dailyPracticeBtn.onclick = () => this.startDailyPractice();
-        
-        // Insert after the main buttons
-        const buttonContainer = homeScreen.querySelector('.main-buttons');
-        buttonContainer.appendChild(dailyPracticeBtn);
-    }
+    dailyPracticeBtn.onclick = () => this.startDailyPractice();
+
+    // Insert after the main buttons
+    const buttonContainer = homeScreen.querySelector('.main-buttons');
+    buttonContainer.appendChild(dailyPracticeBtn);
+}
 }
 
 // Initialize the application
@@ -6918,4 +6936,3 @@ document.addEventListener('DOMContentLoaded', () => {
     app = new VocabularyApp();
     window.app = app; // Make app globally available for inline onclick handlers
 });
-
