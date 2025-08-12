@@ -6868,19 +6868,7 @@ getRandomDefinitions(correctAnswer, count) {
     return this.getRandomItems(allDefinitions, count);
 }
 
-generateUsageExample(word) {
-    // Simple example generation - could be expanded with more sophisticated examples
-    const examples = {
-        noun: [`The ${word.english} is very important.`, `I need a new ${word.english}.`],
-        verb: [`I ${word.english} every day.`, `Please ${word.english} this.`],
-        adjective: [`This is very ${word.english}.`, `The ${word.english} book is here.`],
-    };
 
-    const wordType = word.partOfSpeech || 'noun';
-    const exampleTemplates = examples[wordType] || examples.noun;
-
-    return exampleTemplates[Math.floor(Math.random() * exampleTemplates.length)];
-}
 
 generateWrongUsageExamples(word, count) {
     const wrongExamples = [
