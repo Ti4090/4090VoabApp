@@ -6708,25 +6708,26 @@ createDailyQuestion(currentWord) {
 
     // Generate option buttons
     optionsElement.innerHTML = '';
-    shuffledOptions.forEach((option, index) => {
+    shuffledOptions.forEach((option) => {
         const button = document.createElement('button');
         button.className = 'daily-option';
         button.textContent = option;
-        button.onclick = () => this.selectDailyOption(option, correctAnswer, button);
+        button.onclick = () => this.selectDailyOption(option, correctAnswer);
         optionsElement.appendChild(button);
     });
 }
 
-selectDailyOption(selectedOption, correctAnswer, buttonElement) {
+// Hata düzeltmesi: Tıklanan butonun referansı artık gerekli değil.
+selectDailyOption(selectedOption, correctAnswer) {
     const isCorrect = selectedOption === correctAnswer;
     const allOptions = document.querySelectorAll('.daily-option');
 
-    // Disable all options
+    // Disable all options and highlight the correct one
     allOptions.forEach(btn => {
         btn.disabled = true;
         if (btn.textContent === correctAnswer) {
             btn.classList.add('correct');
-        } else if (btn === buttonElement && !isCorrect) {
+        } else if (btn.textContent === selectedOption) {
             btn.classList.add('incorrect');
         }
     });
