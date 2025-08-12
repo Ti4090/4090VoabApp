@@ -6394,7 +6394,7 @@ Keep learning and expanding your vocabulary! 🚀📚
         this.currentPronunciationIndex = 0;
     }
 
-   // Daily Practice System
+// Daily Practice System
 initializeDailyPractice() {
     this.dailyPracticeData = {
         lastPracticeDate: null,
@@ -6820,9 +6820,9 @@ completeDailyPractice() {
     const dailyInterface = document.getElementById('daily-practice-interface');
     dailyInterface.innerHTML = completionHTML;
 
-    // Düzeltme: Olay dinleyicileri ekleniyor.
-    document.getElementById('completion-home-btn').addEventListener('click', () => this.showScreen('home'));
-    document.getElementById('completion-stats-btn').addEventListener('click', () => this.showStatistics());
+    // DÜZELTME: TAMAMLAMA EKRANI BUTONLARINA OLAY DİNLEYİCİLERİ EKLENİYOR
+    this.addEventListenerSafely('completion-home-btn', 'click', () => this.showScreen('home'));
+    this.addEventListenerSafely('completion-stats-btn', 'click', () => this.showStatistics());
 
     // Show celebration toast
     this.showToast(`Daily practice complete! ${accuracy}% accuracy - ${this.dailyPracticeData.streak} day streak!`, 'success');
@@ -6845,7 +6845,8 @@ getDailyStreakMessage() {
 }
 
 exitDailyPractice() {
-    if (this.dailyPracticeData.isActive) {
+    // DÜZELTME: `isActive` kontrolü doğru yapılıyor.
+    if (this.dailyPracticeData.isActive && this.dailyPracticeData.currentIndex < this.dailyPracticeData.currentWords.length) {
         // Ask for confirmation if practice is incomplete
         if (confirm('Are you sure you want to exit daily practice? Your progress will be lost.')) {
             this.dailyPracticeData.isActive = false;
