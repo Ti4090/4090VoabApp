@@ -6870,17 +6870,6 @@ getRandomDefinitions(correctAnswer, count) {
 
 
 
-generateWrongUsageExamples(word, count) {
-    const wrongExamples = [
-        `The ${word.english} flew away quickly.`,
-        `I ${word.english} to the store yesterday.`,
-        `This ${word.english} is very colorful.`,
-        `Please ${word.english} me the answer.`
-    ];
-
-    return this.getRandomItems(wrongExamples, count);
-}
-
 getRandomItems(array, count) {
     const shuffled = this.shuffleArray([...array]);
     return shuffled.slice(0, Math.min(count, shuffled.length));
