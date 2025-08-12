@@ -2136,7 +2136,7 @@ input[type="file"]:focus {
 [data-theme="black"] .mode-btn,
 [data-theme="black"] .main-btn,
 [data-theme="black"] .action-btn {
-    background: #000 !important;
+    background: #1a1a1a !important;
     color: #ffffff !important;
     border-color: rgba(255, 255, 255, 0.3) !important;
 }
@@ -8654,8 +8654,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 
 /* Override all black text in black theme - MASTER OVERRIDE */
 [data-theme="black"] *:not(.checkmark):not(.icon) {
-    color: #000000 !important;
-    
+    color: #ffffff !important;
 }
 
 [data-theme="black"] * {
